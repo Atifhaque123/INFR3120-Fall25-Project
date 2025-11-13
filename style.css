@@ -11,7 +11,15 @@ h1{
 .logo{
     display: block;
     margin: 10px auto;
-    width: 100px;
+    width: 120px;
+}
+
+.divider{
+    width: 100%;
+    margin: 20px auto;
+    border: 0;
+    height: 1px;
+    background-color: black;
 }
 
 button{

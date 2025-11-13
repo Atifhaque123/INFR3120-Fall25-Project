@@ -17,6 +17,8 @@ function clearForm() {
   document.getElementById("status").value = "Draft";
 
   document.getElementById("eventForm").dataset.editId = "";
+
+  document.getElementById("formTitle").textContent = "Add Event";
 }
 
 function showForm() {
@@ -127,11 +129,19 @@ function startEdit(id) {
   document.getElementById("status").value = ev.status;
 
   document.getElementById("eventForm").dataset.editId = ev.id;
+
+  document.getElementById("formTitle").textContent = "Edit Event";
+
   showForm();
 }
 
 
 function removeEvent(id) {
+  const sure = confirm("Are you sure you want to delete this event?");
+  if (!sure){
+    return;
+  }
+  
   const list = loadEvents().filter(e => String(e.id) !== String(id));
   saveEvents(list);
   renderTable();
