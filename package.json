@@ -1,0 +1,27 @@
+{
+  "name": "eventscheduler---final",
+  "version": "1.0.0",
+  "description": "This web application lets users create, view, edit, and delete events.\r It is built using basic HTML, CSS, and JavaScript with localStorage for data storage.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Atifhaque123/INFR3120-Fall25-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Atifhaque123/INFR3120-Fall25-Project/issues"
+  },
+  "homepage": "https://github.com/Atifhaque123/INFR3120-Fall25-Project#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.4"
+  }
+}
