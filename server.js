@@ -3,15 +3,14 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 require("dotenv").config();
-
 const fs = require("fs");
-const usersFile = "./users/users.json";
-
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
 
+const usersFile = "./users/users.json";
+
 function readUsers() {
-  try{
+  try {
     const fileData = fs.readFileSync(usersFile, "utf8");
     const parsed = JSON.parse(fileData);
     return parsed.users || [];
@@ -28,7 +27,7 @@ function saveUsers(usersArray) {
 
 function requireLogin(req, res, next) {
   if (!req.session || !req.session.user) {
-    return res.status(401).json({error: "You must be logged in to do this "});
+    return res.status(401).json({ error: "You must be logged in to do this" });
   }
   next();
 }
@@ -38,18 +37,15 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname));  
+app.use(express.static(__dirname));
 
-app.use(session({
-  secret: "event-secret-key",
-  resave: false,
-  saveUnitialized: false
-}));
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
-
+app.use(
+  session({
+    secret: "event-secret-key",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 console.log("MONGO_URI from env:", process.env.MONGO_URI);
 
@@ -58,45 +54,62 @@ mongoose
   .then(() => console.log("connected to mongodb"))
   .catch((err) => console.log("connection error:", err));
 
-
 const itemSchema = new mongoose.Schema({
   title: String,
-  description: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  date: String,
+  time: String,
+  location: String,
+  status: String,
+  createdAt: { type: Date, default: Date.now },
   owner: String,
 });
 
 const Item = mongoose.model("Item", itemSchema);
 
-app.get("/api/items", requireLogin, async (req, res) =>{
-  try{
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.get("/session-status", (req, res) => {
+  if (req.session && req.session.user) {
+    return res.json({
+      loggedIn: true,
+      username: req.session.user.username,
+    });
+  }
+  res.json({ loggedIn: false });
+});
+
+app.get("/api/items", requireLogin, async (req, res) => {
+  try {
     const username = req.session.user.username;
-
-    const items = await Item.find({ owner: username})
-    .sort({ createdAt: -1 });
-
+    const items = await Item.find({ owner: username }).sort({ createdAt: -1 });
     res.json(items);
   } catch (err) {
     console.log("get error:", err);
-    res.status(500).json({error: "error getting items" });
+    res.status(500).json({ error: "error getting items" });
   }
 });
 
-app.post("/api/items", async (req, res) => {
+app.post("/api/items", requireLogin, async (req, res) => {
   try {
-    const username = req.session.user/username;
+    const username = req.session.user.username;
+    const { title, date, time, location, status } = req.body;
 
-    const newItem = new Item({
-      title: req.body.title,
-      description: req.body.description,
+    if (!title || !date || !time) {
+      return res.status(400).json({ error: "Missing fields" });
+    }
+
+    const newItem = await Item.create({
+      title,
+      date,
+      time,
+      location,
+      status,
       owner: username,
     });
 
-    const saved = await newItem.save();
-    res.status(201).json(saved);
+    res.status(201).json(newItem);
   } catch (err) {
     console.log("error in POST /api/items:", err);
     res.status(500).json({ error: "error creating item" });
@@ -106,17 +119,16 @@ app.post("/api/items", async (req, res) => {
 app.put("/api/items/:id", requireLogin, async (req, res) => {
   try {
     const username = req.session.user.username;
+    const { title, date, time, location, status } = req.body;
 
     const updated = await Item.findOneAndUpdate(
       { _id: req.params.id, owner: username },
-      req.body,
+      { title, date, time, location, status },
       { new: true }
     );
 
     if (!updated) {
-      return res
-        .status(404)
-        .json({ error: "Item not found or not yours" });
+      return res.status(404).json({ error: "Item not found or not yours" });
     }
 
     res.json(updated);
@@ -125,7 +137,6 @@ app.put("/api/items/:id", requireLogin, async (req, res) => {
     res.status(500).json({ error: "error updating item" });
   }
 });
-
 
 app.delete("/api/items/:id", requireLogin, async (req, res) => {
   try {
@@ -136,8 +147,8 @@ app.delete("/api/items/:id", requireLogin, async (req, res) => {
       owner: username,
     });
 
-    if(!deleted){
-      return res.status(404).json({ error: "Item not found or not yours."});
+    if (!deleted) {
+      return res.status(404).json({ error: "Item not found or not yours." });
     }
 
     res.json({ message: "deleted" });
@@ -151,18 +162,20 @@ app.post("/register", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  if (!username || !password){
-    return res.status(400).json({ error: "Username and password are required. "});
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: "Username and password are required." });
   }
 
   const users = readUsers();
   const existingUser = users.find((u) => u.username === username);
 
   if (existingUser) {
-    return res.status(400).json({ error: "That username is already taken. "});
+    return res.status(400).json({ error: "That username is already taken." });
   }
 
-  try{
+  try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = {
@@ -174,34 +187,35 @@ app.post("/register", async (req, res) => {
     users.push(newUser);
     saveUsers(users);
 
-    res.status(201).json({ message: "User registered successfully."});
-  }catch (err) {
+    res.status(201).json({ message: "User registered successfully." });
+  } catch (err) {
     console.log("Error in /register:", err);
     res.status(500).json({ error: "Problem creating user." });
   }
 });
 
-
-app.post("/login", async (req, res) =>{
+app.post("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
   if (!username || !password) {
-    return res.status(400).json({ error: "Username and password are required"});
+    return res
+      .status(400)
+      .json({ error: "Username and password are required" });
   }
 
   const users = readUsers();
   const existingUser = users.find((u) => u.username === username);
 
-  if (!existingUser){
+  if (!existingUser) {
     return res.status(400).json({ error: "Invalid username or password." });
   }
 
-  try{
+  try {
     const match = await bcrypt.compare(password, existingUser.password);
 
     if (!match) {
-      return res.status(400).json({error: "Invalid username or password."});
+      return res.status(400).json({ error: "Invalid username or password." });
     }
 
     req.session.user = {
@@ -209,10 +223,10 @@ app.post("/login", async (req, res) =>{
       username: existingUser.username,
     };
 
-    res.json({ message: "Login successful."});
+    res.json({ message: "Login successful." });
   } catch (err) {
     console.log("Error in /login:", err);
-    res.status(500).json({ error: "Problem logging in "});
+    res.status(500).json({ error: "Problem logging in" });
   }
 });
 

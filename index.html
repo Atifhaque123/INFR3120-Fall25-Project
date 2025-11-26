@@ -1,61 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event Scheduler</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event Scheduler</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Event Scheduler</h1>
-    <img src="logo.png" alt="Team logo" class="logo">
+  <nav>
+    <a href="index.html" id="homeLink">Home</a>
+    <a href="login.html" id="loginLink">Login</a>
+    <a href="register.html" id="registerLink">Register</a>
+    <a href="#" id="logoutLink" style="display:none;">Logout</a>
+  </nav>
 
-    <hr class = "divider">
+  <h1>Event Scheduler</h1>
+  <img src="logo.png" alt="Team logo" class="logo">
 
-    <button id="newEventBtn">Create Event</button>
+  <hr class="divider">
 
-    <div id="eventForm" style="display:none;">
-        <h2 id="formTitle">Add Event</h2>
-        <form>
-            <label>Title:</label>
-            <input type="text" id="title"><br>
+  <button id="newEventBtn">Create Event</button>
 
-            <label>Date:</label>
-            <input type="date" id="date"><br>
+  <div id="eventForm" style="display:none;">
+    <h2 id="formTitle">Add Event</h2>
+    <form>
+      <label>Title:</label>
+      <input type="text" id="title"><br>
 
-            <label>Time:</label>
-            <input type="time" id="time"><br>
+      <label>Date:</label>
+      <input type="date" id="date"><br>
 
-            <label>Location:</label>
-            <input type="text" id="location"><br>
+      <label>Time:</label>
+      <input type="time" id="time"><br>
 
-            <label>Status:</label>
-            <select id="status">
-                <option>Draft</option>
-                <option>Published</option>
-            </select><br>
+      <label>Location:</label>
+      <input type="text" id="location"><br>
 
-            <button type="button" id="saveBtn">Save</button>
-            <button type="button" id="cancelBtn">Cancel</button>
-        </form>
-    </div>
+      <label>Status:</label>
+      <select id="status">
+        <option>Draft</option>
+        <option>Published</option>
+      </select><br>
 
-    <h2>Upcoming Events</h2>
-    <table id="eventTable" border="1">
-        <thead>
-            <tr>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Location</th>
-                <th>Status</th>
-                <th>Actions</th>  
-            </tr>
-        </thead>
-         <tbody></tbody>
-    </table>
+      <button type="button" id="saveBtn">Save</button>
+      <button type="button" id="cancelBtn">Cancel</button>
+    </form>
+  </div>
 
-    <script src="script.js"></script>
+  <h2>Upcoming Events</h2>
+  <table id="eventTable" border="1">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script src="auth.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
