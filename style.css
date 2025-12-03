@@ -1,46 +1,241 @@
-body{
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f5f5f5;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-h1{
-    text-align: center;
+body {
+  font-family: Arial, sans-serif;
+  background: #0f1624;
+  color: #e5e5e5;
+  padding: 25px;
 }
 
-.logo{
-    display: block;
-    margin: 10px auto;
-    width: 120px;
+nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.divider{
-    width: 100%;
-    margin: 20px auto;
-    border: 0;
-    height: 1px;
-    background-color: black;
+nav a,
+nav button {
+  background: #1e2230;
+  border: 1px solid #3e4250;
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: #e5e5e5;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 0.9rem;
 }
 
-button{
-    padding: 8px 14px;
-    margin: 5px;
-    cursor: pointer;
+nav a:hover,
+nav button:hover {
+  background: #262b3a;
 }
 
-table{
-    width: 100%;
-    background-color: white;
-    margin-top: 15px;
+h1 {
+  font-size: 1.9rem;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-th, td{
-    padding: 8px;
-    text-align: center;
+.logo {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: #3a3f4f;
+  margin: 15px 0 20px;
+}
+
+#newEventBtn {
+  background: #3b82f6;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+#newEventBtn:hover {
+  background: #2563eb;
 }
 
 #eventForm {
-    background-color: white;
-    padding: 10px;
-    margin-top: 15px;
+  background: #1b2131;
+  padding: 18px;
+  border-radius: 12px;
+  border: 1px solid #3b4150;
+  margin-bottom: 20px;
 }
+
+#eventForm h2 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+#eventForm form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+#eventForm label {
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+  color: #bfc3ce;
+}
+
+#eventForm input,
+#eventForm select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #495065;
+  background: #0d1220;
+  color: #e5e5e5;
+  font-size: 0.9rem;
+}
+
+#saveBtn,
+#cancelBtn {
+  padding: 7px 14px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+#saveBtn {
+  background: #22c55e;
+  color: white;
+}
+
+#saveBtn:hover {
+  background: #16a34a;
+}
+
+#cancelBtn {
+  background: #2a3042;
+  color: #e5e5e5;
+}
+
+#cancelBtn:hover {
+  background: #333a4e;
+}
+
+#eventTable {
+  width: 100%;
+  border-collapse: collapse;
+  background: #1b2131;
+  border: 1px solid #3b4150;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#eventTable th,
+#eventTable td {
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  border-bottom: 1px solid #2a3042;
+}
+
+#eventTable th {
+  background: #111827;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: #b4b8c5;
+}
+
+#eventTable tr:nth-child(even) {
+  background: #161c29;
+}
+
+#eventTable tr:hover {
+  background: #24304a;
+}
+
+.editBtn,
+.deleteBtn {
+  padding: 4px 12px;
+  border-radius: 18px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.78rem;
+}
+
+.editBtn {
+  background: #2563eb22;
+  color: #60a5fa;
+}
+
+.editBtn:hover {
+  background: #2563eb33;
+}
+
+.deleteBtn {
+  background: #dc262622;
+  color: #f87171;
+}
+
+deleteBtn:hover {
+  background: #dc262633;
+}
+
+.auth-wrapper {
+  width: 360px;
+  margin: 40px auto;
+  background: #1b2131;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #3b4150;
+}
+
+.auth-wrapper h2 {
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+.auth-wrapper input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #495065;
+  background: #0d1220;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.auth-wrapper button {
+  width: 100%;
+  padding: 8px;
+  border-radius: 20px;
+  background: #3b82f6;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.auth-wrapper button:hover {
+  background: #2563eb;
+}
+
+.auth-wrapper p {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #b2b7c5;
+  text-align: center;
+}
+
+
+
